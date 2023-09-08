@@ -47,21 +47,16 @@ int main(int argc, char** argv )
 	printf(">> testing device props\n");
 	{
 		oroDeviceProp props;
-		oroGetDeviceProperties( &props, device );
+		oroGetDeviceProperties( &props, 0 );
 		printf("executing on %s (%s)\n", props.name, props.gcnArchName );
-		int v;
-		oroDriverGetVersion( &v );
-		printf("running on driver: %d\n", v);
 	}
 	printf(">> testing kernel execution\n");
 	{
 		oroFunction function;
 		{
-			const char* code = "extern \"C\" __global__ void testKernel( int* __restrict__ a )"
-			"{"
-				"int tid = threadIdx.x;"
-				"atomicAdd( a, tid );"
-			"}";
+			const char* code = "extern \"C\" __global__ "
+							   "void testKernel()"
+							   "{ int a = threadIdx.x; printf(\"	thread %d running\\n\", a); }";
 			const char* funcName = "testKernel";
 			orortcProgram prog;
 			orortcResult e;
@@ -92,35 +87,9 @@ int main(int argc, char** argv )
 			ee = oroModuleGetFunction(&function, module, funcName);		
 		}
 
-		oroStream stream;
-		oroStreamCreate( &stream );
-		
-		oroEvent start, stop;
-		oroEventCreateWithFlags( &start, 0 );
-		oroEventCreateWithFlags( &stop, 0 );
-		oroEventRecord( start, stream );
-
-		int a_host = -1;
-		int* a_device = nullptr;
-		oroMalloc( (oroDeviceptr*)&a_device, sizeof( int ) );
-		oroMemset( (oroDeviceptr)a_device, 0, sizeof( int ) );
-		const void* args[] = { &a_device };
-		oroError e = oroModuleLaunchKernel( function, 1,1,1, 64,1,1, 0, stream, (void**)args, 0 );
-
-		oroEventRecord( stop, stream );
-
+		void** args = {};
+		oroError e = oroModuleLaunchKernel( function, 1,1,1, 32,1,1, 0, 0, args, 0 );
 		oroDeviceSynchronize();
-
-		oroStreamDestroy( stream );
-		oroMemcpyDtoH( &a_host, (oroDeviceptr)a_device, sizeof( int ) );
-		printf("a_host (expected 2016): %d\n", a_host);
-		oroFree( (oroDeviceptr)a_device );
-
-		float milliseconds = 0.0f;
-		oroEventElapsedTime( &milliseconds, start, stop );
-		printf( ">> kernel - %.5f ms\n", milliseconds );
-		oroEventDestroy( start );
-		oroEventDestroy( stop );
 	}
 	printf(">> done\n");
 	return 0;

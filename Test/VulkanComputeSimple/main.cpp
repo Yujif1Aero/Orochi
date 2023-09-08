@@ -285,7 +285,7 @@ int main(int argc, char **argv) {
 	oroCtx ctx;
 	e = oroCtxCreate(&ctx, 0, device);
 	oroDeviceProp props;
-	e = oroGetDeviceProperties(&props, device);
+	e = oroGetDeviceProperties(&props, 0);
 	try {
 		vk::raii::Context context;
 		vk::ApplicationInfo applicationInfo(AppName.c_str(), 1, EngineName.c_str(),
@@ -416,7 +416,8 @@ int main(int argc, char **argv) {
 				vkExternalMemoryHandleType()));
 		std::vector<float> hostMemory{};
 		hostMemory.resize(memorySize / sizeof(float));
-		oroMemcpyDtoH((void *)hostMemory.data(), (oroDeviceptr)deviceMemoryPp, memorySize);
+		oroMemcpy((void *)hostMemory.data(), deviceMemoryPp, memorySize,
+			oroMemcpyDeviceToHost);
 		bool pass = true;
 		for (uint32_t i = 0; i < localSize * localSize; ++i) 
 		{

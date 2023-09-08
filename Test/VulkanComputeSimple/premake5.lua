@@ -11,6 +11,6 @@ project "VulkanComputeSimple"
 
       includedirs { "../../" }
       includedirs { "./" }
-      files { "../../Orochi/Orochi.h", "../../Orochi/Orochi.cpp" }
+      files { "../../Orochi/**.h", "../../Orochi/**.cpp" }
       files { "*.cpp" }
       files { "../../contrib/**.h", "../../contrib/**.cpp" }

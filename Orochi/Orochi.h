@@ -26,95 +26,14 @@
 enum oroApi
 {
     ORO_API_AUTOMATIC = 1<<0,
-	ORO_API_HIPDRIVER = 1 << 1,
-	ORO_API_HIPRTC = 1 << 2,
-	ORO_API_HIP = ORO_API_HIPDRIVER | ORO_API_HIPRTC,
-	ORO_API_CUDADRIVER = 1 << 3,
-	ORO_API_CUDARTC = 1 << 4,
-    ORO_API_CUDA = ORO_API_CUDADRIVER | ORO_API_CUDARTC,
+    ORO_API_HIP = 1<<1,
+    ORO_API_CUDA = 1<<2,
 };
 
-// Errors referenced from https://github.com/ROCm-Developer-Tools/HIP/blob/develop/include/hip/hip_runtime_api.h
-// CUDA errors are mapped to HIP errors via. the enum values
 enum oroError
 {
 	oroSuccess = 0,
-	oroErrorInvalidValue = 1,
-	oroErrorOutOfMemory = 2,
-	oroErrorMemoryAllocation = 2,
-	oroErrorNotInitialized = 3,
-	oroErrorInitializationError = 3,
-	oroErrorDeinitialized = 4,
-	oroErrorProfilerDisabled = 5,
-	oroErrorProfilerNotInitialized = 6,
-	oroErrorProfilerAlreadyStarted = 7,
-	oroErrorProfilerAlreadyStopped = 8,
-	oroErrorInvalidConfiguration = 9,
-	oroErrorInvalidPitchValue = 12,
-	oroErrorInvalidSymbol = 13,
-	oroErrorInvalidDevicePointer = 17,
-	oroErrorInvalidMemcpyDirection = 21,
-	oroErrorInsufficientDriver = 35,
-	oroErrorMissingConfiguration = 52,
-	oroErrorPriorLaunchFailure = 53,
-	oroErrorInvalidDeviceFunction = 98,
-	oroErrorNoDevice = 100,
-	oroErrorInvalidDevice = 101,
-	oroErrorInvalidImage = 200,
-	oroErrorInvalidContext = 201,
-	oroErrorContextAlreadyCurrent = 202,
-	oroErrorMapFailed = 205,
-	oroErrorMapBufferObjectFailed = 205,
-	oroErrorUnmapFailed = 206,
-	oroErrorArrayIsMapped = 207,
-	oroErrorAlreadyMapped = 208,
-	oroErrorNoBinaryForGpu = 209,
-	oroErrorAlreadyAcquired = 210,
-	oroErrorNotMapped = 211,
-	oroErrorNotMappedAsArray = 212,
-	oroErrorNotMappedAsPointer = 213,
-	oroErrorECCNotCorrectable = 214,
-	oroErrorUnsupportedLimit = 215,
-	oroErrorContextAlreadyInUse = 216,
-	oroErrorPeerAccessUnsupported = 217,
-	oroErrorInvalidKernelFile = 218, ///< In CUDA DRV, it is CUDA_ERROR_INVALID_PTX
-	oroErrorInvalidGraphicsContext = 219,
-	oroErrorInvalidSource = 300,
-	oroErrorFileNotFound = 301,
-	oroErrorSharedObjectSymbolNotFound = 302,
-	oroErrorSharedObjectInitFailed = 303,
-	oroErrorOperatingSystem = 304,
-	oroErrorInvalidHandle = 400,
-	oroErrorInvalidResourceHandle = 400,
-	oroErrorIllegalState = 401,
-	oroErrorNotFound = 500,
-	oroErrorNotReady = 600,
-	oroErrorIllegalAddress = 700,
-	oroErrorLaunchOutOfResources = 701,
-	oroErrorLaunchTimeOut = 702,
-	oroErrorPeerAccessAlreadyEnabled = 704,
-	oroErrorPeerAccessNotEnabled = 705,
-	oroErrorSetOnActiveProcess = 708,
-	oroErrorContextIsDestroyed = 709,
-	oroErrorAssert = 710,
-	oroErrorHostMemoryAlreadyRegistered = 712,
-	oroErrorHostMemoryNotRegistered = 713,
-	oroErrorLaunchFailure = 719,
-	oroErrorCooperativeLaunchTooLarge = 720,
-	oroErrorNotSupported = 801,
-	oroErrorStreamCaptureUnsupported = 900,
-	oroErrorStreamCaptureInvalidated = 901,
-	oroErrorStreamCaptureMerge = 902,
-	oroErrorStreamCaptureUnmatched = 903,
-	oroErrorStreamCaptureUnjoined = 904,
-	oroErrorStreamCaptureIsolation = 905,
-	oroErrorStreamCaptureImplicit = 906,
-	oroErrorCapturedEvent = 907,
-	oroErrorStreamCaptureWrongThread = 908,
-	oroErrorGraphExecUpdateFailure = 910,
 	oroErrorUnknown = 999,
-	oroErrorRuntimeMemory = 1052,
-	oroErrorRuntimeOther = 1053
 };
 
 enum oroMemcpyKind
@@ -148,42 +67,16 @@ typedef struct ioroStream_t* oroStream;
 typedef struct ioroPointerAttribute_t* oroPointerAttribute;
 typedef unsigned long long oroTextureObject;
 typedef void* oroExternalMemory_t;
-typedef struct iorortcLinkState* orortcLinkState;
+
+
 typedef struct _orortcProgram* orortcProgram;
-
-#define oroHostRegisterPortable 0x01
-#define oroHostRegisterMapped 0x02
-#define oroHostRegisterIoMemory 0x04
-
-#define ORO_LAUNCH_PARAM_BUFFER_POINTER ((void*)0x01)
-#define ORO_LAUNCH_PARAM_BUFFER_SIZE ((void*)0x02)
-#define ORO_HIP_LAUNCH_PARAM_END ((void*)0x03)
-#define ORO_CUDA_LAUNCH_PARAM_END ((void*)0x00)
 
 enum orortcResult
 {
 	ORORTC_SUCCESS = 0,
-	ORORTC_ERROR_OUT_OF_MEMORY = 1,
-	ORORTC_ERROR_PROGRAM_CREATION_FAILURE = 2,
-	ORORTC_ERROR_INVALID_INPUT = 3,
-	ORORTC_ERROR_INVALID_PROGRAM = 4,
-	ORORTC_ERROR_INVALID_OPTION = 5,
-	ORORTC_ERROR_COMPILATION = 6,
-	ORORTC_ERROR_BUILTIN_OPERATION_FAILURE = 7,
-	ORORTC_ERROR_NO_NAME_EXPRESSIONS_AFTER_COMPILATION = 8,
-	ORORTC_ERROR_NO_LOWERED_NAMES_BEFORE_COMPILATION = 9,
-	ORORTC_ERROR_NAME_EXPRESSION_NOT_VALID = 10,
 	ORORTC_ERROR_INTERNAL_ERROR = 11,
-	ORORTC_ERROR_LINKING = 100
 };
 
-typedef enum oroEvent_flags_enum
-{
-	oroEventDefault = 0x0,
-	oroEventBlockingSync = 0x1,
-	oroEventDisableTiming = 0x2,
-	oroEventInterprocess = 0x4,
-} oroEvent_flags;
 
 typedef enum oroDeviceAttribute {
   oroDeviceAttributeCudaCompatibleBegin = 0,
@@ -457,15 +350,6 @@ typedef enum oroSharedMemConfig {
     oroSharedMemBankSizeEightByte = 0x02,
 } oroSharedMemConfig;
 
-typedef enum {
-	ORO_LIMIT_STACK_SIZE = 0x00,
-	ORO_LIMIT_PRINTF_FIFO_SIZE = 0x01,
-	ORO_LIMIT_MALLOC_HEAP_SIZE = 0x02,
-	ORO_LIMIT_DEV_RUNTIME_SYNC_DEPTH = 0x03,
-	ORO_LIMIT_DEV_RUNTIME_PENDING_LAUNCH_COUNT = 0x04,
-	ORO_LIMIT_MAX,
-} oroLimit;
-
 typedef enum PPshared_carveout_enum {
     ORO_SHAREDMEM_CARVEOUT_DEFAULT,
     ORO_SHAREDMEM_CARVEOUT_MAX_SHARED = 100,
@@ -516,52 +400,157 @@ typedef enum oroJitOption {
     oroJitOptionFastCompile,
     oroJitOptionNumOptions,
 } oroJitOption;
+/*
+typedef enum HIPjit_target_enum {
+    ORO_TARGET_COMPUTE_20 = 20,
+    ORO_TARGET_COMPUTE_21 = 21,
+    ORO_TARGET_COMPUTE_30 = 30,
+    ORO_TARGET_COMPUTE_32 = 32,
+    ORO_TARGET_COMPUTE_35 = 35,
+    ORO_TARGET_COMPUTE_37 = 37,
+    ORO_TARGET_COMPUTE_50 = 50,
+    ORO_TARGET_COMPUTE_52 = 52,
+    ORO_TARGET_COMPUTE_53 = 53,
+    ORO_TARGET_COMPUTE_60 = 60,
+    ORO_TARGET_COMPUTE_61 = 61,
+    ORO_TARGET_COMPUTE_62 = 62,
+    ORO_TARGET_COMPUTE_70 = 70,
+    ORO_TARGET_COMPUTE_73 = 73,
+    ORO_TARGET_COMPUTE_75 = 75,
+} HIPjit_target;
 
-typedef enum orortcJIT_option
-{
-	ORORTC_JIT_MAX_REGISTERS = 0,
-	ORORTC_JIT_THREADS_PER_BLOCK,
-	ORORTC_JIT_WALL_TIME,
-	ORORTC_JIT_INFO_LOG_BUFFER,
-	ORORTC_JIT_INFO_LOG_BUFFER_SIZE_BYTES,
-	ORORTC_JIT_ERROR_LOG_BUFFER,
-	ORORTC_JIT_ERROR_LOG_BUFFER_SIZE_BYTES,
-	ORORTC_JIT_OPTIMIZATION_LEVEL,
-	ORORTC_JIT_TARGET_FROM_HIPCONTEXT,
-	ORORTC_JIT_TARGET,
-	ORORTC_JIT_FALLBACK_STRATEGY,
-	ORORTC_JIT_GENERATE_DEBUG_INFO,
-	ORORTC_JIT_LOG_VERBOSE,
-	ORORTC_JIT_GENERATE_LINE_INFO,
-	ORORTC_JIT_CACHE_MODE,
-	ORORTC_JIT_NEW_SM3X_OPT,
-	ORORTC_JIT_FAST_COMPILE,
-	ORORTC_JIT_GLOBAL_SYMBOL_NAMES,
-	ORORTC_JIT_GLOBAL_SYMBOL_ADDRESS,
-	ORORTC_JIT_GLOBAL_SYMBOL_COUNT,
-	ORORTC_JIT_LTO,
-	ORORTC_JIT_FTZ,
-	ORORTC_JIT_PREC_DIV,
-	ORORTC_JIT_PREC_SQRT,
-	ORORTC_JIT_FMA,
-	ORORTC_JIT_NUM_OPTIONS,
-} orortcJIT_option;
+typedef enum HIPjit_fallback_enum {
+    ORO_PREFER_PTX = 0,
+    ORO_PREFER_BINARY,
+} HIPjit_fallback;
 
-typedef enum orortcJITInputType
-{
-	ORORTC_JIT_INPUT_CUBIN = 0,
-	ORORTC_JIT_INPUT_PTX,
-	ORORTC_JIT_INPUT_FATBINARY,
-	ORORTC_JIT_INPUT_OBJECT,
-	ORORTC_JIT_INPUT_LIBRARY,
-	ORORTC_JIT_INPUT_NVVM,
-	ORORTC_JIT_NUM_LEGACY_INPUT_TYPES,
-	ORORTC_JIT_INPUT_LLVM_BITCODE = 100,
-	ORORTC_JIT_INPUT_LLVM_BUNDLED_BITCODE = 101,
-	ORORTC_JIT_INPUT_LLVM_ARCHIVES_OF_BUNDLED_BITCODE = 102,
-	ORORTC_JIT_NUM_INPUT_TYPES = ( ORORTC_JIT_NUM_LEGACY_INPUT_TYPES + 3 )
-} orortcJITInputType;
+typedef enum HIPjit_cacheMode_enum {
+    ORO_JIT_CACHE_OPTION_NONE = 0,
+    ORO_JIT_CACHE_OPTION_CG,
+    ORO_JIT_CACHE_OPTION_CA,
+} HIPjit_cacheMode;
 
+typedef enum HIPjitInputType_enum {
+    ORO_JIT_INPUT_HIPBIN = 0,
+    ORO_JIT_INPUT_PTX,
+    ORO_JIT_INPUT_FATBINARY,
+    ORO_JIT_INPUT_OBJECT,
+    ORO_JIT_INPUT_LIBRARY,
+    ORO_JIT_NUM_INPUT_TYPES,
+} HIPjitInputType;
+
+typedef struct HIPlinkState_st* HIPlinkState;
+
+typedef enum hipGLDeviceList {
+    hipGLDeviceListAll = 1,           ///< All hip devices used by current OpenGL context.
+    hipGLDeviceListCurrentFrame = 2,  ///< Hip devices used by current OpenGL context in current
+                                      ///< frame
+                                      hipGLDeviceListNextFrame = 3      ///< Hip devices used by current OpenGL context in next
+                                                                        ///< frame.
+} hipGLDeviceList;
+
+typedef enum hipGraphicsRegisterFlags {
+    hipGraphicsRegisterFlagsNone = 0,
+    hipGraphicsRegisterFlagsReadOnly = 1,  ///< HIP will not write to this registered resource
+    hipGraphicsRegisterFlagsWriteDiscard =
+    2,  ///< HIP will only write and will not read from this registered resource
+    hipGraphicsRegisterFlagsSurfaceLoadStore = 4,  ///< HIP will bind this resource to a surface
+    hipGraphicsRegisterFlagsTextureGather =
+    8  ///< HIP will perform texture gather operations on this registered resource
+} hipGraphicsRegisterFlags;
+
+typedef enum HIPgraphicsRegisterFlags_enum {
+    ORO_GRAPHICS_REGISTER_FLAGS_NONE = 0x00,
+    ORO_GRAPHICS_REGISTER_FLAGS_READ_ONLY = 0x01,
+    ORO_GRAPHICS_REGISTER_FLAGS_WRITE_DISCARD = 0x02,
+    ORO_GRAPHICS_REGISTER_FLAGS_SURFACE_LDST = 0x04,
+    ORO_GRAPHICS_REGISTER_FLAGS_TEXTURE_GATHER = 0x08,
+} HIPgraphicsRegisterFlags;
+
+typedef enum HIPgraphicsMapResourceFlags_enum {
+    ORO_GRAPHICS_MAP_RESOURCE_FLAGS_NONE = 0x00,
+    ORO_GRAPHICS_MAP_RESOURCE_FLAGS_READ_ONLY = 0x01,
+    ORO_GRAPHICS_MAP_RESOURCE_FLAGS_WRITE_DISCARD = 0x02,
+} HIPgraphicsMapResourceFlags;
+
+typedef enum HIParray_cubemap_face_enum {
+    ORO_HIPBEMAP_FACE_POSITIVE_X = 0x00,
+    ORO_HIPBEMAP_FACE_NEGATIVE_X = 0x01,
+    ORO_HIPBEMAP_FACE_POSITIVE_Y = 0x02,
+    ORO_HIPBEMAP_FACE_NEGATIVE_Y = 0x03,
+    ORO_HIPBEMAP_FACE_POSITIVE_Z = 0x04,
+    ORO_HIPBEMAP_FACE_NEGATIVE_Z = 0x05,
+} HIParray_cubemap_face;
+
+typedef enum hipLimit_t {
+    ORO_LIMIT_STACK_SIZE = 0x00,
+    ORO_LIMIT_PRINTF_FIFO_SIZE = 0x01,
+    hipLimitMallocHeapSize = 0x02,
+    ORO_LIMIT_DEV_RUNTIME_SYNC_DEPTH = 0x03,
+    ORO_LIMIT_DEV_RUNTIME_PENDING_LAUNCH_COUNT = 0x04,
+    ORO_LIMIT_MAX,
+} hipLimit_t;
+
+typedef enum hipResourceType {
+    hipResourceTypeArray = 0x00,
+    hipResourceTypeMipmaoroedArray = 0x01,
+    hipResourceTypeLinear = 0x02,
+    hipResourceTypePitch2D = 0x03,
+} hipResourceType;
+
+typedef enum hipError_t {
+    hipSuccess = 0,
+    hipErrorInvalidValue = 1,
+    hipErrorOutOfMemory = 2,
+    hipErrorNotInitialized = 3,
+    hipErrorDeinitialized = 4,
+    hipErrorProfilerDisabled = 5,
+    hipErrorProfilerNotInitialized = 6,
+    hipErrorProfilerAlreadyStarted = 7,
+    hipErrorProfilerAlreadyStooroed = 8,
+    hipErrorNoDevice = 100,
+    hipErrorInvalidDevice = 101,
+    hipErrorInvalidImage = 200,
+    hipErrorInvalidContext = 201,
+    hipErrorContextAlreadyCurrent = 202,
+    hipErrorMapFailed = 205,
+    hipErrorUnmapFailed = 206,
+    hipErrorArrayIsMaoroed = 207,
+    hipErrorAlreadyMaoroed = 208,
+    hipErrorNoBinaryForGpu = 209,
+    hipErrorAlreadyAcquired = 210,
+    hipErrorNotMaoroed = 211,
+    hipErrorNotMaoroedAsArray = 212,
+    hipErrorNotMaoroedAsPointer = 213,
+    hipErrorECCNotCorrectable = 214,
+    hipErrorUnsuoroortedLimit = 215,
+    hipErrorContextAlreadyInUse = 216,
+    hipErrorPeerAccessUnsuoroorted = 217,
+    hipErrorInvalidKernelFile = 218,
+    hipErrorInvalidGraphicsContext = 219,
+    hipErrorInvalidSource = 300,
+    hipErrorFileNotFound = 301,
+    hipErrorSharedObjectSymbolNotFound = 302,
+    hipErrorSharedObjectInitFailed = 303,
+    hipErrorOperatingSystem = 304,
+    hipErrorInvalidHandle = 400,
+    hipErrorNotFound = 500,
+    hipErrorNotReady = 600,
+    hipErrorIllegalAddress = 700,
+    hipErrorLaunchOutOfResources = 701,
+    hipErrorLaunchTimeOut = 702,
+    hipErrorPeerAccessAlreadyEnabled = 704,
+    hipErrorPeerAccessNotEnabled = 705,
+    hipErrorSetOnActiveProcess = 708,
+    hipErrorAssert = 710,
+    hipErrorHostMemoryAlreadyRegistered = 712,
+    hipErrorHostMemoryNotRegistered = 713,
+    hipErrorLaunchFailure = 719,
+    hipErrorCooperativeLaunchTooLarge = 720,
+    hipErrorNotSuoroorted = 801,
+    hipErrorUnknown = 999,
+} hipError_t;
+*/
 
 typedef enum oroExternalMemoryHandleType_enum {
   oroExternalMemoryHandleTypeOpaqueFd = 1,
@@ -583,48 +572,46 @@ typedef struct oroExternalMemoryHandleDesc_st {
   } handle;
   unsigned long long size;
   unsigned int flags;
-  unsigned int reserved[16];
 } oroExternalMemoryHandleDesc;
 typedef struct oroExternalMemoryBufferDesc_st {
   unsigned long long offset;
   unsigned long long size;
   unsigned int flags;
-  unsigned int reserved[16];
 } oroExternalMemoryBufferDesc;
 
 /**
 * Stream CallBack struct
 */
 
+#define __ORO_FUNC_DEC( funcName, args ) oroError OROAPI funcName args
 
-oroError OROAPI oroGetErrorName(oroError error, const char** pStr) ;
-oroError OROAPI oroGetErrorString(oroError error, const char** pStr) ;
-oroError OROAPI oroInit(unsigned int Flags) ;
-oroError OROAPI oroDriverGetVersion(int* driverVersion) ;
-oroError OROAPI oroGetDevice(int* device) ;
-oroError OROAPI oroGetDeviceCount(int* count, oroApi api = ORO_API_AUTOMATIC ) ;
-oroError OROAPI oroGetDeviceProperties(oroDeviceProp* props, oroDevice dev) ;
-oroError OROAPI oroDeviceGet(oroDevice* device, int ordinal ) ;
-oroError OROAPI oroDeviceGetName(char* name, int len, oroDevice dev) ;
-oroError OROAPI oroDeviceGetAttribute(int* pi, oroDeviceAttribute attrib, oroDevice dev) ;
-oroError OROAPI oroDeviceGetLimit(size_t* pValue, oroLimit limit) ;
-oroError OROAPI oroDeviceSetLimit(oroLimit limit, size_t value) ;
-oroError OROAPI oroDeviceComputeCapability(int* major, int* minor, oroDevice dev) ;
-oroError OROAPI oroDevicePrimaryCtxRetain(oroCtx* pctx, oroDevice dev) ;
-oroError OROAPI oroDevicePrimaryCtxRelease(oroDevice dev) ;
-oroError OROAPI oroDevicePrimaryCtxSetFlags(oroDevice dev, unsigned int flags) ;
-oroError OROAPI oroDevicePrimaryCtxGetState(oroDevice dev, unsigned int* flags, int* active) ;
-oroError OROAPI oroDevicePrimaryCtxReset(oroDevice dev) ;
-oroError OROAPI oroCtxCreate(oroCtx* pctx, unsigned int flags, oroDevice dev) ;
-oroError OROAPI oroCtxDestroy(oroCtx ctx) ;
-oroError OROAPI oroCtxPushCurrent(oroCtx ctx) ;
-oroError OROAPI oroCtxPopCurrent(oroCtx* pctx) ;
-oroError OROAPI oroCtxSetCurrent(oroCtx ctx) ;
-oroError OROAPI oroCtxGetCurrent(oroCtx* pctx) ;
-oroError OROAPI oroCtxGetDevice(oroDevice* device) ;
-oroError OROAPI oroCtxGetFlags(unsigned int* flags) ;
-oroError OROAPI oroCtxSynchronize(void) ;
-oroError OROAPI oroDeviceSynchronize(void) ;
+
+__ORO_FUNC_DEC( oroGetErrorName, (oroError error, const char** pStr) );
+__ORO_FUNC_DEC( oroGetErrorString, (oroError error, const char** pStr) );
+__ORO_FUNC_DEC( oroInit, (unsigned int Flags) );
+__ORO_FUNC_DEC( oroDriverGetVersion, (int* driverVersion) );
+__ORO_FUNC_DEC( oroGetDevice, (int* device) );
+__ORO_FUNC_DEC( oroGetDeviceCount, (int* count, oroApi api = ORO_API_AUTOMATIC ) );
+__ORO_FUNC_DEC( oroGetDeviceProperties, (oroDeviceProp* props, int deviceId) );
+__ORO_FUNC_DEC( oroDeviceGet, (oroDevice* device, int ordinal ) );
+__ORO_FUNC_DEC( oroDeviceGetName, (char* name, int len, oroDevice dev) );
+__ORO_FUNC_DEC( oroDeviceGetAttribute, (int* pi, oroDeviceAttribute attrib, oroDevice dev) );
+__ORO_FUNC_DEC( oroDeviceComputeCapability, (int* major, int* minor, oroDevice dev) );
+__ORO_FUNC_DEC( oroDevicePrimaryCtxRetain, (oroCtx* pctx, oroDevice dev) );
+__ORO_FUNC_DEC( oroDevicePrimaryCtxRelease, (oroDevice dev) );
+__ORO_FUNC_DEC( oroDevicePrimaryCtxSetFlags, (oroDevice dev, unsigned int flags) );
+__ORO_FUNC_DEC( oroDevicePrimaryCtxGetState, (oroDevice dev, unsigned int* flags, int* active) );
+__ORO_FUNC_DEC( oroDevicePrimaryCtxReset, (oroDevice dev) );
+__ORO_FUNC_DEC( oroCtxCreate, (oroCtx* pctx, unsigned int flags, oroDevice dev) );
+__ORO_FUNC_DEC( oroCtxDestroy, (oroCtx ctx) );
+__ORO_FUNC_DEC( oroCtxPushCurrent, (oroCtx ctx) );
+__ORO_FUNC_DEC( oroCtxPopCurrent, (oroCtx* pctx) );
+__ORO_FUNC_DEC( oroCtxSetCurrent, (oroCtx ctx) );
+__ORO_FUNC_DEC( oroCtxGetCurrent, (oroCtx* pctx) );
+__ORO_FUNC_DEC( oroCtxGetDevice, (oroDevice* device) );
+__ORO_FUNC_DEC( oroCtxGetFlags, (unsigned int* flags) );
+__ORO_FUNC_DEC( oroCtxSynchronize, (void) );
+__ORO_FUNC_DEC( oroDeviceSynchronize, (void) );
 //oroError OROAPI oroCtxGetCacheConfig(hipFuncCache_t* pconfig);
 //oroError OROAPI oroCtxSetCacheConfig(hipFuncCache_t config);
 //oroError OROAPI oroCtxGetSharedMemConfig(hipSharedMemConfig* pConfig);
@@ -647,14 +634,13 @@ oroError OROAPI oroFree2(oroDeviceptr dptr);
 //oroError OROAPI oroHostMalloc(void** oro, size_t bytesize, unsigned int flags);
 //oroError OROAPI oroHostFree(void* p);
 //oroError OROAPI oroMemHostAlloc(void** oro, size_t bytesize, unsigned int Flags);
-oroError OROAPI oroHostRegister(void* p, size_t bytesize, unsigned int Flags);
-oroError OROAPI oroHostGetDevicePointer(oroDeviceptr* pdptr, void* p, unsigned int Flags);
+//oroError OROAPI oroHostGetDevicePointer(oroDeviceptr* pdptr, void* p, unsigned int Flags);
 //oroError OROAPI oroHostGetFlags(unsigned int* pFlags, void* p);
 //oroError OROAPI oroMallocManaged(oroDeviceptr* dptr, size_t bytesize, unsigned int flags);
 //oroError OROAPI oroDeviceGetByPCIBusId(hipDevice_t* dev, const char* pciBusId);
 //oroError OROAPI oroDeviceGetPCIBusId(char* pciBusId, int len, hipDevice_t dev);
-oroError OROAPI oroHostUnregister(void* p);
-//oroError OROAPI oroMemcpy(void *dst, void *src, size_t ByteCount, oroMemcpyKind kind);
+//oroError OROAPI oroMemHostUnregister(void* p);
+oroError OROAPI oroMemcpy(void *dst, void *src, size_t ByteCount, oroMemcpyKind kind);
 //oroError OROAPI oroMemcpyPeer(oroDeviceptr dstDevice, hipCtx_t dstContext, oroDeviceptr srcDevice, hipCtx_t srcContext, size_t ByteCount);
 oroError OROAPI oroMemcpyHtoD(oroDeviceptr dstDevice, void* srcHost, size_t ByteCount);
 oroError OROAPI oroMemcpyDtoH(void* dstHost, oroDeviceptr srcDevice, size_t ByteCount);
@@ -662,19 +648,17 @@ oroError OROAPI oroMemcpyDtoD(oroDeviceptr dstDevice, oroDeviceptr srcDevice, si
 //oroError OROAPI oroDrvMemcpy2DUnaligned(const hip_Memcpy2D* pCopy);
 //oroError OROAPI oroMemcpyParam2D(const hip_Memcpy2D* pCopy);
 //oroError OROAPI oroDrvMemcpy3D(const ORO_MEMCPY3D* pCopy);
-oroError OROAPI oroMemcpyHtoDAsync( oroDeviceptr dstDevice, const void* srcHost, size_t ByteCount, oroStream hStream );
-oroError OROAPI oroMemcpyDtoHAsync( void* dstHost, oroDeviceptr srcDevice, size_t ByteCount, oroStream hStream );
-oroError OROAPI oroMemcpyDtoDAsync( oroDeviceptr dstDevice, oroDeviceptr srcDevice, size_t ByteCount, oroStream hStream );
+//oroError OROAPI oroMemcpyHtoDAsync(oroDeviceptr dstDevice, const void* srcHost, size_t ByteCount, hipStream_t hStream);
+//oroError OROAPI oroMemcpyDtoHAsync(void* dstHost, oroDeviceptr srcDevice, size_t ByteCount, hipStream_t hStream);
 //oroError OROAPI oroMemcpyParam2DAsync(const hip_Memcpy2D* pCopy, hipStream_t hStream);
 //oroError OROAPI oroDrvMemcpy3DAsync(const ORO_MEMCPY3D* pCopy, hipStream_t hStream);
-
 oroError OROAPI oroMemset(oroDeviceptr dstDevice, unsigned int ui, size_t N);
 oroError OROAPI oroMemsetD8(oroDeviceptr dstDevice, unsigned char ui, size_t N);
 oroError OROAPI oroMemsetD16(oroDeviceptr dstDevice, unsigned short ui, size_t N);
 oroError OROAPI oroMemsetD32(oroDeviceptr dstDevice, unsigned int ui, size_t N);
-oroError OROAPI oroMemsetD8Async(oroDeviceptr dstDevice, unsigned char uc, size_t N, oroStream hStream);
-oroError OROAPI oroMemsetD16Async(oroDeviceptr dstDevice, unsigned short us, size_t N, oroStream hStream);
-oroError OROAPI oroMemsetD32Async(oroDeviceptr dstDevice, unsigned int ui, size_t N, oroStream hStream);
+//oroError OROAPI oroMemsetD8Async(oroDeviceptr dstDevice, unsigned char uc, size_t N, oroStream hStream);
+//oroError OROAPI oroMemsetD16Async(oroDeviceptr dstDevice, unsigned short us, size_t N, oroStream hStream);
+//oroError OROAPI oroMemsetD32Async(oroDeviceptr dstDevice, unsigned int ui, size_t N, oroStream hStream);
 //oroError OROAPI oroMemsetD2D8Async(oroDeviceptr dstDevice, size_t dstPitch, unsigned char uc, size_t Width, size_t Height, oroStream hStream);
 //oroError OROAPI oroMemsetD2D16Async(oroDeviceptr dstDevice, size_t dstPitch, unsigned short us, size_t Width, size_t Height, oroStream hStream);
 //oroError OROAPI oroMemsetD2D32Async(oroDeviceptr dstDevice, size_t dstPitch, unsigned int ui, size_t Width, size_t Height, oroStream hStream);
@@ -690,31 +674,28 @@ oroError OROAPI oroStreamCreate(oroStream* stream);
 //oroError OROAPI oroStreamWaitEvent(oroStream hStream, hipEvent_t hEvent, unsigned int Flags);
 //oroError OROAPI oroStreamAddCallback(oroStream hStream, hipStreamCallback_t callback, void* userData, unsigned int flags);
 //oroError OROAPI oroStreamQuery(oroStream hStream);
-oroError OROAPI oroStreamSynchronize(oroStream hStream);
-oroError OROAPI oroStreamDestroy(oroStream hStream);
-oroError OROAPI oroEventCreateWithFlags(oroEvent* phEvent, unsigned int Flags);
-oroError OROAPI oroEventRecord(oroEvent hEvent, oroStream hStream);
+//oroError OROAPI oroStreamSynchronize(oroStream hStream);
+//oroError OROAPI oroStreamDestroy(oroStream hStream);
+//oroError OROAPI oroEventCreateWithFlags(hipEvent_t* phEvent, unsigned int Flags);
+//oroError OROAPI oroEventRecord(hipEvent_t hEvent, oroStream hStream);
 //oroError OROAPI oroEventQuery(hipEvent_t hEvent);
-oroError OROAPI oroEventSynchronize(oroEvent hEvent);
-oroError OROAPI oroEventDestroy(oroEvent hEvent);
-oroError OROAPI oroEventElapsedTime(float* pMilliseconds, oroEvent hStart, oroEvent hEnd);
-oroError OROAPI oroFuncGetAttribute(int* pi, oroFunction_attribute attrib, oroFunction hfunc);
+//oroError OROAPI oroEventSynchronize(hipEvent_t hEvent);
+//oroError OROAPI oroEventDestroy(hipEvent_t hEvent);
+//oroError OROAPI oroEventElapsedTime(float* pMilliseconds, hipEvent_t hStart, hipEvent_t hEnd);
+//oroError OROAPI oroFuncGetAttribute(int* pi, hipFunction_attribute attrib, hipFunction_t hfunc);
 //oroError OROAPI oroFuncSetCacheConfig(hipFunction_t hfunc, hipFuncCache_t config);
 oroError OROAPI oroModuleLaunchKernel(oroFunction f, unsigned int gridDimX, unsigned int gridDimY, unsigned int gridDimZ, unsigned int blockDimX, unsigned int blockDimY, unsigned int blockDimZ, unsigned int sharedMemBytes, oroStream hStream, void** kernelParams, void** extra);
 //oroError OROAPI oroDrvOccupancyMaxActiveBlocksPerMultiprocessor(int* numBlocks, hipFunction_t func, int blockSize, size_t dynamicSMemSize);
 //oroError OROAPI oroDrvOccupancyMaxActiveBlocksPerMultiprocessorWithFlags(int* numBlocks, hipFunction_t func, int blockSize, size_t dynamicSMemSize, unsigned int flags);
-oroError OROAPI oroModuleOccupancyMaxPotentialBlockSize(int* minGridSize, int* blockSize, oroFunction 
-    
-    
-    func, size_t dynamicSMemSize, int blockSizeLimit);
+//oroError OROAPI oroModuleOccupancyMaxPotentialBlockSize(int* minGridSize, int* blockSize, hipFunction_t func, size_t dynamicSMemSize, int blockSizeLimit);
 //oroError OROAPI oroTexRefSetArray(hipTexRef hTexRef, hArray * hArray, unsigned int Flags);
-//oroError OROAPI oroTexRefSetAddress(size_t* ByteOffset, hipTexRef hTexRef, oroDeviceptr dptr, size_t bytes);
-//oroError OROAPI oroTexRefSetAddress2D(hipTexRef hTexRef, const ORO_ARRAY_DESCRIPTOR* desc, oroDeviceptr dptr, size_t Pitch);
+//oroError OROAPI oroTexRefSetAddress(size_t* ByteOffset, hipTexRef hTexRef, hipDeviceptr_t dptr, size_t bytes);
+//oroError OROAPI oroTexRefSetAddress2D(hipTexRef hTexRef, const ORO_ARRAY_DESCRIPTOR* desc, hipDeviceptr_t dptr, size_t Pitch);
 //oroError OROAPI oroTexRefSetFormat(hipTexRef hTexRef, hipArray_Format fmt, int NumPackedComponents);
 //oroError OROAPI oroTexRefSetAddressMode(hipTexRef hTexRef, int dim, hipTextureAddressMode am);
 //oroError OROAPI oroTexRefSetFilterMode(hipTexRef hTexRef, hipTextureFilterMode fm);
 //oroError OROAPI oroTexRefSetFlags(hipTexRef hTexRef, unsigned int Flags);
-//oroError OROAPI oroTexRefGetAddress(oroDeviceptr* pdptr, hipTexRef hTexRef);
+//oroError OROAPI oroTexRefGetAddress(hipDeviceptr_t* pdptr, hipTexRef hTexRef);
 //oroError OROAPI oroTexRefGetArray(hArray ** phArray, hipTexRef hTexRef);
 //oroError OROAPI oroTexRefGetAddressMode(hipTextureAddressMode* pam, hipTexRef hTexRef, int dim);
 //oroError OROAPI oroTexObjectCreate(hipTextureObject_t* pTexObject, const hipResourceDesc* pResDesc, const hipTextureDesc* pTexDesc, const ORO_RESOURCE_VIEW_DESC* pResViewDesc);
@@ -725,7 +706,7 @@ oroError OROAPI oroModuleOccupancyMaxPotentialBlockSize(int* minGridSize, int* b
 //oroError OROAPI oroDeviceGetP2PAttribute(int* value, hipDeviceP2PAttr attrib, hipDevice_t srcDevice, hipDevice_t dstDevice);
 //oroError OROAPI oroGraphicsUnregisterResource(hipGraphicsResource resource);
 //oroError OROAPI oroGraphicsResourceGetMaoroedMipmaoroedArray(hipMipmaoroedArray_t* pMipmaoroedArray, hipGraphicsResource resource);
-//oroError OROAPI oroGraphicsResourceGetMaoroedPointer(oroDeviceptr* pDevPtr, size_t* pSize, hipGraphicsResource resource);
+//oroError OROAPI oroGraphicsResourceGetMaoroedPointer(hipDeviceptr_t* pDevPtr, size_t* pSize, hipGraphicsResource resource);
 //oroError OROAPI oroGraphicsMapResources(unsigned int count, hipGraphicsResource* resources, oroStream hStream);
 //oroError OROAPI oroGraphicsUnmapResources(unsigned int count, hipGraphicsResource* resources, oroStream hStream);
 //oroError OROAPI oroGraphicsGLRegisterBuffer(hipGraphicsResource* pCudaResource, GLuint buffer, unsigned int Flags);
@@ -733,8 +714,8 @@ oroError OROAPI oroModuleOccupancyMaxPotentialBlockSize(int* minGridSize, int* b
 oroError OROAPI oroImportExternalMemory(oroExternalMemory_t* extMem_out, const oroExternalMemoryHandleDesc* memHandleDesc);
 oroError OROAPI oroExternalMemoryGetMappedBuffer(void **devPtr, oroExternalMemory_t extMem, const oroExternalMemoryBufferDesc* bufferDesc);
 oroError OROAPI oroDestroyExternalMemory(oroExternalMemory_t extMem);
-// oroError OROAPI oroGetLastError(oroError oro_error);
-const char* OROAPI orortcGetErrorString(orortcResult result);
+oroError OROAPI oroGetLastError(oroError oro_error);
+orortcResult OROAPI orortcGetErrorString(orortcResult result);
 orortcResult OROAPI orortcAddNameExpression(orortcProgram prog, const char* name_expression);
 orortcResult OROAPI orortcCompileProgram(orortcProgram prog, int numOptions, const char** options);
 orortcResult OROAPI orortcCreateProgram(orortcProgram* prog, const char* src, const char* name, int numHeaders, const char** headers, const char** includeNames);
@@ -742,17 +723,8 @@ orortcResult OROAPI orortcDestroyProgram(orortcProgram* prog);
 orortcResult OROAPI orortcGetLoweredName(orortcProgram prog, const char* name_expression, const char** lowered_name);
 orortcResult OROAPI orortcGetProgramLog(orortcProgram prog, char* log);
 orortcResult OROAPI orortcGetProgramLogSize(orortcProgram prog, size_t* logSizeRet);
-orortcResult OROAPI orortcGetBitcode( orortcProgram prog, char* bitcode );
-orortcResult OROAPI orortcGetBitcodeSize( orortcProgram prog, size_t* bitcodeSizeRet );
 orortcResult OROAPI orortcGetCode(orortcProgram prog, char* code);
 orortcResult OROAPI orortcGetCodeSize(orortcProgram prog, size_t* codeSizeRet);
-
-orortcResult OROAPI orortcLinkCreate( unsigned int num_options, orortcJIT_option* option_ptr, void** option_vals_pptr, orortcLinkState* link_state_ptr );
-orortcResult OROAPI orortcLinkAddFile( orortcLinkState link_state_ptr, orortcJITInputType input_type, const char* file_path, unsigned int num_options, orortcJIT_option* options_ptr, void** option_values );
-orortcResult OROAPI orortcLinkAddData( orortcLinkState link_state_ptr, orortcJITInputType input_type, void* image, size_t image_size, const char* name, unsigned int num_options, orortcJIT_option* options_ptr, void** option_values );
-orortcResult OROAPI orortcLinkComplete( orortcLinkState link_state_ptr, void** bin_out, size_t* size_out );
-orortcResult OROAPI orortcLinkDestroy( orortcLinkState link_state_ptr );
-
 
 
 enum {
@@ -764,10 +736,7 @@ enum {
 
 
 int oroInitialize( oroApi api, oroU32 flags );
-oroApi oroLoadedAPI();
 oroApi oroGetCurAPI( oroU32 flags );
-void* oroGetRawCtx( oroCtx ctx );
-oroError oroCtxCreateFromRaw( oroCtx* ctxOut, oroApi api, void* ctxIn );
-oroError oroCtxCreateFromRawDestroy( oroCtx ctx );
-oroDevice oroGetRawDevice( oroDevice dev );
-oroDevice oroSetRawDevice( oroApi api, oroDevice dev );
+void* getRawCtx( oroCtx ctx );
+oroDevice getRawDevice( oroDevice dev );
+
