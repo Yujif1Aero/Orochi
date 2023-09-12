@@ -34,7 +34,7 @@ void GPUMatrixMultiplication( const Matrix<T>& A, const Matrix<T>& B, Matrix<T>&
 	const int p = B.getRows();
 	const int q = B.getCols();
 	const size_t size = sizeof( T );
-	std::cout << size << std::endl;
+	//std::cout << size << std::endl;
 	// const float* Ap = A.atp();
 	// const float* Bp = B.atp();
 	// const float* Cp = C.atp();
@@ -118,7 +118,7 @@ void GPUMatrixMultiplication( const Matrix<T>& A, const Matrix<T>& B, Matrix<T>&
 	e = oroModuleLaunchKernel( *function, 1, 1, 1, 10, 1, 1, 0, 0, (void**)args, 0 ); //
 	oroDeviceSynchronize();
 	clock_t end = clock();
-	std::cout << "duration = " << (float)( end - start ) / CLOCKS_PER_SEC << "sec.\n";
+	std::cout << "GPU duration = " << (float)( end - start ) / CLOCKS_PER_SEC << "sec.\n";
 	// clock stop
 	// std::cout << d_C[0] << std::endl;
 	//  結果をデバイスからホストにコピー
@@ -143,6 +143,7 @@ void GPUMatrixMultiplication( const Matrix<T>& A, const Matrix<T>& B, Matrix<T>&
 	oroFree( (oroDeviceptr)d_n );
 	oroFree( (oroDeviceptr)d_p );
 	oroFree( (oroDeviceptr)d_q );
+	oroFree( (oroDeviceptr)d_size );
 }
 template<typename T>
 void CPUMatrixMultiplication( const Matrix<T>& A, const Matrix<T>& B, Matrix<T>& C )
@@ -150,7 +151,7 @@ void CPUMatrixMultiplication( const Matrix<T>& A, const Matrix<T>& B, Matrix<T>&
 	int m = A.getRows();
 	int n = A.getCols();
 	int p = B.getCols();
-
+	clock_t start = clock();
 	for( int i = 0; i < m; ++i )
 	{
 		for( int j = 0; j < p; ++j )
@@ -163,6 +164,8 @@ void CPUMatrixMultiplication( const Matrix<T>& A, const Matrix<T>& B, Matrix<T>&
 			C.at( i, j ) = sum;
 		}
 	}
+	clock_t end = clock();
+	std::cout << "CPU duration = " << (float)( end - start ) / CLOCKS_PER_SEC << "sec.\n";
 	std::cout << "CPU 行列C (A * B):" << std::endl;
 	for( int i = 0; i < m; ++i )
 	{

@@ -120,7 +120,7 @@ int main(int argc, char **argv)
 
 	// 行列のサイズを設定します
 	int m = 1;
-	int n = 10000;
+	int n = 100000;
 	int p = n;
 	int q = 1;
 	 
@@ -149,6 +149,7 @@ int main(int argc, char **argv)
 
 	//// 行列の積を計算します
 	GPUMatrixMultiplication( A, B, C_GPU, &function );
+
 	CPUMatrixMultiplication( A, B, C_CPU );
 
 	//// 結果を出力します
