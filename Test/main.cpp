@@ -63,6 +63,7 @@ int main(int argc, char** argv )
 				"atomicAdd( a, tid );"
 			"}";
 			const char* funcName = "testKernel";
+			std::cout << code << std::endl;
 			orortcProgram prog;
 			orortcResult e;
 			e = orortcCreateProgram( &prog, code, funcName, 0, 0, 0 );

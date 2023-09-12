@@ -24,6 +24,7 @@
 // Does a matrix multiplication of two 16x16, fp16 matrices, and stores them into a 16x16 fp16 result matrix
 
 // Use half16 as an alias of the internal clang vector type of 16 fp16 values
+
 typedef _Float16 half16 __attribute__( ( ext_vector_type( 16 ) ) );
 
 extern "C" __global__ void wmma_matmul( __half* a, __half* b, __half* c )

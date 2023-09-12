@@ -47,12 +47,16 @@ void loadFile( const char* path, std::vector<char>& dst )
 int main( int argc, char** argv )
 {
 	// Initialize Orochi
-	if ( oroInitialize( ( oroApi )( ORO_API_HIP ), 0 ) != 0 )
+	/*if ( oroInitialize( ( oroApi )( ORO_API_HIP ), 0 ) != 0 )
 	{ 
 		printf( "Unable to initialize Orochi. Please check your HIP installation or create an issue at our github for assistance.\n" );
 		return -1;
+	}*/
+	if( oroInitialize( (oroApi)( ORO_API_CUDA ), 0 ) != 0 )
+	{
+		printf( "Unable to initialize Orochi. Please check your HIP installation or create an issue at our github for assistance.\n" );
+		return -1;
 	}
-
 	oroError e;
 	e = oroInit( 0 );
 	ERROR_CHECK( e );
@@ -82,6 +86,9 @@ int main( int argc, char** argv )
 	std::vector<char> code;
 	const char* funcName = "wmma_matmul";
 	loadFile( "../Test/WMMA/wmma_test_kernel.h", code );
+	//std::cout << code.data() << std::endl;
+	code.push_back( '\0' ); 
+	std::cout << code.data() << std::endl;
 	orortcProgram prog;
 	orortcResult rtc_e;
 	rtc_e = orortcCreateProgram( &prog, code.data(), funcName, 0, 0, 0 );

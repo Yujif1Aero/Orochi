@@ -70,6 +70,14 @@ int main( int argc, char** argv )
 							   "void testKernel()"
 							   "{ int a = threadIdx.x; printf(\"	thread %d running\\n\", a); }";
 			const char* funcName = "testKernel";
+			//for( int i = 0; i < sizeof( code ) / sizeof( code[0] ); i++ )
+			//for( const char* str : code )
+			//{
+				std::cout << code << std::endl;
+			//} 
+			std::cout << std::endl;
+			//exit( 0 );
+			
 			orortcProgram prog;
 			orortcResult e;
 			e = orortcCreateProgram( &prog, code, funcName, 0, 0, 0 );

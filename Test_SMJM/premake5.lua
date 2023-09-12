@@ -1,4 +1,4 @@
-project "Test"
+project "Test_SMJM"
       kind "ConsoleApp"
 
       targetdir "../dist/bin/%{cfg.buildcfg}"

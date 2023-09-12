@@ -103,3 +103,8 @@ workspace "YamatanoOrochi"
         group "Advanced"
         include "./Test/VulkanComputeSimple"
      end
+
+--SMJM
+    group "SMJM"
+    include "./Test_SMJM"
+    include "./Test_SMJM/Test_SMJM2"
