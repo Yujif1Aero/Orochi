@@ -1,4 +1,7 @@
 #pragma once
+#define BLOCK_SIZEx 1024 // threadsPerBlock 
+#define VECTORNUMx 1024 
+#define GRID_SIZEx  (VECTORNUMx + BLOCK_SIZEx -1 ) / BLOCK_SIZEx //blocksPerGrid  
 using T = float;
 template<typename T>
 class Matrix
@@ -41,6 +44,7 @@ void GPUMatrixMultiplication( const Matrix<T>& A, const Matrix<T>& B, Matrix<T>&
 	const T* Ap = A.atp();
 	const T* Bp = B.atp();
 	const T* Cp = C.atp();
+
 	//  デバイス用のメモリを確保
 	T* d_A;
 	T* d_B;
@@ -54,6 +58,9 @@ void GPUMatrixMultiplication( const Matrix<T>& A, const Matrix<T>& B, Matrix<T>&
 	int* d_q;
 	int* d_size;
 
+    std::cout << " BLOCK_SIZEx,    VECTORNUMx,   GRID_SIZEx=     " << BLOCK_SIZEx << "    " << VECTORNUMx << "    " << GRID_SIZEx << std::endl;
+	exit( 0 );
+
 	oroMalloc( (oroDeviceptr*)&d_A, sizeof( T ) * m * n );
 	oroMalloc( (oroDeviceptr*)&d_B, sizeof( T ) * p * q );
 	oroMalloc( (oroDeviceptr*)&d_C, sizeof( T ) * m * q );
@@ -65,6 +72,7 @@ void GPUMatrixMultiplication( const Matrix<T>& A, const Matrix<T>& B, Matrix<T>&
 	oroMalloc( (oroDeviceptr*)&d_p, sizeof( int ) );
 	oroMalloc( (oroDeviceptr*)&d_q, sizeof( int ) );
 	oroMalloc( (oroDeviceptr*)&d_size, sizeof( T ) );
+
 
 	// データをデバイスにコピー
 	oroMemcpyHtoD( (oroDeviceptr)d_A, (void*)Ap, sizeof( T ) * m * n );
@@ -115,7 +123,8 @@ void GPUMatrixMultiplication( const Matrix<T>& A, const Matrix<T>& B, Matrix<T>&
 	oroDeviceSynchronize();
 	clock_t start = clock();
 	srand( (unsigned int)time( NULL ) );
-	e = oroModuleLaunchKernel( *function, 1, 1, 1, 10, 1, 1, 0, 0, (void**)args, 0 ); //
+	size_t sharedata = GRID_SIZEx * BLOCK_SIZEx * sizeof( T );
+	e = oroModuleLaunchKernel( *function, GRID_SIZEx, 1, 1, BLOCK_SIZEx, 1, 1, sharedata, 0, (void**)args, 0 ); //
 	oroDeviceSynchronize();
 	clock_t end = clock();
 	std::cout << "GPU duration = " << (float)( end - start ) / CLOCKS_PER_SEC << "sec.\n";

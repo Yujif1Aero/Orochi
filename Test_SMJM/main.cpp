@@ -120,7 +120,7 @@ int main(int argc, char **argv)
 
 	// 行列のサイズを設定します
 	int m = 1;
-	int n = 100000;
+	int n = VECTORNUMx;
 	int p = n;
 	int q = 1;
 	 
