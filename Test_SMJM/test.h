@@ -1,7 +1,7 @@
 #pragma once
-#define BLOCK_SIZEx 1024 // threadsPerBlock 
-#define VECTORNUMx 1024 
-#define GRID_SIZEx  (VECTORNUMx + BLOCK_SIZEx -1 ) / BLOCK_SIZEx //blocksPerGrid  
+#define BLOCK_SIZEx 1024 // threadsPerBlock
+#define VECTORNUMx 2048*1000
+#define GRID_SIZEx ( VECTORNUMx + BLOCK_SIZEx - 1 ) / BLOCK_SIZEx // blocksPerGrid
 using T = float;
 template<typename T>
 class Matrix
@@ -59,7 +59,7 @@ void GPUMatrixMultiplication( const Matrix<T>& A, const Matrix<T>& B, Matrix<T>&
 	int* d_size;
 
     std::cout << " BLOCK_SIZEx,    VECTORNUMx,   GRID_SIZEx=     " << BLOCK_SIZEx << "    " << VECTORNUMx << "    " << GRID_SIZEx << std::endl;
-	exit( 0 );
+	//exit( 0 );
 
 	oroMalloc( (oroDeviceptr*)&d_A, sizeof( T ) * m * n );
 	oroMalloc( (oroDeviceptr*)&d_B, sizeof( T ) * p * q );
@@ -123,7 +123,9 @@ void GPUMatrixMultiplication( const Matrix<T>& A, const Matrix<T>& B, Matrix<T>&
 	oroDeviceSynchronize();
 	clock_t start = clock();
 	srand( (unsigned int)time( NULL ) );
-	size_t sharedata = GRID_SIZEx * BLOCK_SIZEx * sizeof( T );
+	size_t sharedata =0;
+	//size_t sharedata =  BLOCK_SIZEx * sizeof( T );
+	//size_t sharedata = GRID_SIZEx * BLOCK_SIZEx * sizeof( T );
 	e = oroModuleLaunchKernel( *function, GRID_SIZEx, 1, 1, BLOCK_SIZEx, 1, 1, sharedata, 0, (void**)args, 0 ); //
 	oroDeviceSynchronize();
 	clock_t end = clock();

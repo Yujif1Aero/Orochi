@@ -135,7 +135,7 @@ int main(int argc, char **argv)
 	{
 		for( int j = 0; j < n; ++j )
 		{
-			A.at( i, j ) = static_cast<T>( rand() ) / RAND_MAX - (T)0.5;
+			A.at( i, j ) = static_cast<T>( rand() ) / RAND_MAX- (T)0.5;
 		}
 	}
 
@@ -143,7 +143,7 @@ int main(int argc, char **argv)
 	{
 		for( int j = 0; j < q; ++j )
 		{
-			B.at( i, j ) = static_cast<T>( rand() ) / RAND_MAX - (T)0.5;
+			B.at( i, j ) = static_cast<T>( rand() ) / RAND_MAX- (T)0.5;
 		}
 	}
 
